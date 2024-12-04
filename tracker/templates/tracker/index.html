@@ -1,0 +1,104 @@
+{% extends 'tracker/base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+<!-- Welcome Header Section -->
+<h1 class="mt-8 mb-8 text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-6xl text-center">
+    Welcome to the Personal Finance Tracker
+</h1>
+
+{% if user.is_authenticated %}
+    <!-- User Greeting with Icon -->
+    <div class="flex items-center justify-center mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 w-8 h-8 text-white">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+        </svg>
+        <p class="text-2xl text-white font-semibold">
+            Welcome, {{ user.username }}! Your financial dashboard is ready.
+        </p>
+    </div>
+
+    <!-- Divider for Visual Separation -->
+    <div class="border-t-2 border-gray-700 mb-8"></div>
+
+    <!-- Quick Link to View Transactions -->
+    <div class="mb-8 text-center">
+        <a href="{% url 'transactions-list' %}" 
+            class="font-medium text-white hover:underline flex justify-center items-center bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg py-3 px-6 transition duration-300 transform hover:scale-105 hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+            </svg>
+            View My Transactions
+        </a>
+    </div>
+
+    <!-- Featured Stats Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {% comment %} <div class="bg-gradient-to-r from-green-400 to-teal-500 p-6 rounded-lg shadow-xl text-white text-center transform transition duration-300 hover:scale-105">
+            <h3 class="text-xl font-semibold">Total Balance</h3>
+            <p class="text-3xl font-extrabold">Ksh{{ total_balance }}</p>
+        </div> {% endcomment %}
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-500 p-6 rounded-lg shadow-xl text-white text-center transform transition duration-300 hover:scale-105">
+            <h3 class="text-xl font-semibold">Monthly Income</h3>
+            <p class="text-3xl font-extrabold">Ksh{{ total_income|floatformat:2|intcomma }}</p>
+        </div>
+        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 p-6 rounded-lg shadow-xl text-white text-center transform transition duration-300 hover:scale-105">
+            <h3 class="text-xl font-semibold">Expenses This Month</h3>
+            <p class="text-3xl font-extrabold">Ksh{{ total_expenses|floatformat:2|intcomma }}</p>
+        </div>
+        <div class="bg-gradient-to-r from-red-400 to-pink-500 p-6 rounded-lg shadow-xl text-white text-center transform transition duration-300 hover:scale-105">
+            <h3 class="text-xl font-semibold">Net Income</h3>
+            <p class="text-3xl font-extrabold">Ksh{{ net_income|floatformat:2|intcomma }}</p>
+        </div>
+    </div>
+
+    <!-- Financial Data Table -->
+    <div class="overflow-x-auto mb-12">
+        <table class="table">
+            <thead class="text-xs text-white uppercase">
+                <tr>
+                    <th>Total Income</th>
+                    <th>Total Expenses</th>
+                    <th>Net Income</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Ksh{{ total_income|floatformat:2|intcomma }}</td>
+                    <td>Ksh{{ total_expenses|floatformat:2|intcomma }}</td>
+                    <td>Ksh{{ net_income|floatformat:2|intcomma }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <!-- Not Authenticated Message -->
+    <div class="text-center mb-8">
+        <p class="text-white text-lg">
+            Please log in to access your personal finance tracker. Start tracking your expenses and income today!
+        </p>
+    </div>
+{% endif %}
+
+<!-- Additional Information Section -->
+<section class="mt-16 mb-12 px-4 py-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white">
+    <h2 class="text-2xl font-semibold mb-6">How This Works</h2>
+    <p class="text-lg mb-4">
+        The Personal Finance Tracker helps you keep track of your financial activities in one place. Add your income, 
+        expenses, and see your total balance at a glance. Stay on top of your spending and make better financial decisions.
+    </p>
+    <p class="text-lg mb-4">
+        Our easy-to-use interface allows you to categorize your transactions, set budgets, and track your savings goals. 
+        With real-time updates and insights, you'll always know where you stand financially.
+    </p>
+    <p class="text-lg">
+        Ready to take control of your finances? Start by adding your first transaction or connecting your bank account 
+        for automatic syncing.
+    </p>
+</section>
+
+{% endblock content %}
