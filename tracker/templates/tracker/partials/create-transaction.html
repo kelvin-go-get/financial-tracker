@@ -1,0 +1,30 @@
+{% load widget_tweaks %}
+
+<h1 class="mt-8 mb-4 prose prose-2xl bg-black text-white">
+    Create Transaction
+</h1>
+
+<form method="POST" action="{% url 'create-transaction' %}">
+    {% csrf_token %}
+    
+    {% include 'tracker/partials/transaction-form.html' %}
+
+    {% if message %}
+    <div role="alert" class="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ message }}</span>
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-success">
+        Add
+    </button>
+    <button type="button" class="btn btn-error"
+        onclick="window.location.href='{% url 'transactions-list' %}'">
+        Cancel
+    </button>
+</form>
+
+
