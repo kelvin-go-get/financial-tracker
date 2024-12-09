@@ -82,7 +82,7 @@
 
             <tbody>
                 {% for transaction in filter.qs %}
-                    <tr class="hover:bg-gray-100 hover:text-black transition duration-300 ease-in-out">
+                    <tr  onclick="window.location.href='{% url 'update-transaction' transaction.pk %}" class="hover:bg-gray-100 cursor-pointer hover:text-black transition duration-300 ease-in-out">
                         <td class="border px-12 py-8">{{ transaction.date }}</td>
                         <td class="border px-12 py-8">{{ transaction.category }}</td>
                         <td class="border px-12 py-8">{{ transaction.type }}</td>
